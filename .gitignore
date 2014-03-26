@@ -1,4 +1,5 @@
 *.class
+.pom.xml.swp
 
 # Package Files #
 *.jar
