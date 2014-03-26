@@ -8,11 +8,8 @@ public class RxJavaExample {
     }
 
     public void observe(String[] strings) {
-        Observable.from(strings).subscribe(new Action1<String>() {
-            @Override
-            public void call(String s) {
+        Observable.from(strings).subscribe((s) -> {
                 System.out.println("Received " + s);
-            }
         });
     }
 }
