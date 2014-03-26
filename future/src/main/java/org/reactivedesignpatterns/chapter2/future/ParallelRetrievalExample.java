@@ -3,11 +3,11 @@ package org.reactivedesignpatterns.chapter2.future;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class ParallelRetrievalLambdaExample {
+public class ParallelRetrievalExample {
     final CacheRetriever cacheRetriever;
     final DBRetriever dbRetriever;
 
-    ParallelRetrievalLambdaExample(CacheRetriever cacheRetriever,
+    ParallelRetrievalExample(CacheRetriever cacheRetriever,
             DBRetriever dbRetriever) {
         this.cacheRetriever = cacheRetriever;
         this.dbRetriever = dbRetriever;
