@@ -2,7 +2,6 @@ package org.reactivedesignpatterns.chapter2.future
 
 import java.util.concurrent.{ CompletableFuture, ForkJoinPool }
 import scala.concurrent.{ ExecutionContext, Future, Promise }
-import scala.concurrent.duration._
 import scala.util.Try
 
 trait Customer {
@@ -22,10 +21,17 @@ trait DBRetriever {
 
 class ParallelRetrievalPromiseExample(cacheRetriever: CacheRetriever, dbRetriever: DBRetriever) {
   def retrieveCustomer(id: Long): Future[Customer] = {
-    val returnCustomerPromise = Promise[Customer]()
+    // Import the duration DSL to be used in the timeout
+    import scala.concurrent.duration._
+
+    // Set up the thread pool and timeouts
     implicit val ec = ExecutionContext.fromExecutor(new ForkJoinPool())
     implicit val timeout = 250 milliseconds
 
+    // Create the Promise instance that will be used
+    val returnCustomerPromise = Promise[Customer]()
+
+    // Create the competing futures
     Future {
       returnCustomerPromise.tryComplete(Try(cacheRetriever.getCustomer(id)))
     }
@@ -33,6 +39,7 @@ class ParallelRetrievalPromiseExample(cacheRetriever: CacheRetriever, dbRetrieve
       returnCustomerPromise.tryComplete(Try(dbRetriever.getCustomer(id)))
     }
 
+    // Return the Future instance
     returnCustomerPromise.future
   }
 }

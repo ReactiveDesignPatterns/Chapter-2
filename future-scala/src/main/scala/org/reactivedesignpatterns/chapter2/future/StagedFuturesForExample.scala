@@ -2,7 +2,6 @@ package org.reactivedesignpatterns.chapter2.future
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration._
 import java.util.concurrent.ForkJoinPool
 
 trait InventoryService {
@@ -22,6 +21,9 @@ class StagedFuturesForExample(inventoryService: InventoryService) {
    * inventory is a Map of Warehouse ID to count.
    */
   def getProductInventoryByPostalCode(productSku: Long, postalCode: String): Future[(Long, Map[String, Long])] = {
+    // Import the duration DSL to be used in the timeout
+    import scala.concurrent.duration._
+
     // Provide the thread pool and Future timeout value to be applied
     implicit val ec = ExecutionContext.fromExecutor(new ForkJoinPool())
     implicit val timeout = 250 milliseconds
